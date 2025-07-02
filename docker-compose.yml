@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: zk_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crypto
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: toor
+    networks:
+      - zk_net
+    volumes:
+      - zk_pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./src/server
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - ./src/server/.env
+    environment:
+      TORTOISE_SETTINGS_MODULE: backend.db_config
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    networks:
+      - zk_net
+    volumes:
+      - ./src/server:/app
+
+  frontend:
+    build:
+      context: ./src/client
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+    networks:
+      - zk_net
+    volumes:
+      - ./src/client:/app
+
+  nginx:
+    image: nginx:alpine
+    container_name: zk_nginx
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certificate.crt:/etc/nginx/certs/server.crt
+      - ./certificate.key:/etc/nginx/certs/server.key
+    networks:
+      - zk_net
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  zk_pgdata:
+
+networks:
+  zk_net:
+    driver: bridge

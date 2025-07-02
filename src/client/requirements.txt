@@ -1,0 +1,6 @@
+aerich
+tortoise-orm
+fastapi
+pydantic_settings
+uvicorn
+asyncpg

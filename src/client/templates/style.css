@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f4f4f4;
+}
+
+input, textarea, select, button {
+  display: block;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+#output {
+  background: #eee;
+  padding: 10px;
+  border: 1px solid #ccc;
+  white-space: pre-wrap;
+}

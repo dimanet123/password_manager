@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Zero-Knowledge App</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <h1>Zero-Knowledge Password Manager</h1>
+
+  <select id="action">
+    <option value="register">Регистрация</option>
+    <option value="login">Получение данных</option>
+    <option value="change-password">Сменить мастер-пароль</option>
+    <option value="update-data">Обновить данные</option>
+  </select>
+
+  <form id="main-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Пароль" required>
+
+    <input type="password" id="new-password" placeholder="Новый пароль">
+    <textarea id="data-input" placeholder="Данные"></textarea>
+
+    <button type="submit">Отправить</button>
+  </form>
+
+  <pre id="output"></pre>
+
+  <h2>Список пользователей</h2>
+    <table id="user-table" border="1">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Salt</th>
+          <th>Argon Params</th>
+          <th>EDEK</th>
+          <th>Encrypted Data</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  <script src="https://unpkg.com/argon2-browser@1.18.0/dist/argon2-bundled.min.js"></script>
+  <script src="static/crypto.js"></script>
+  <script src="static/app.js"></script>
+</body>
+</html>
